@@ -46,5 +46,27 @@
         | otherwise = insertionsort ((head g) : (insertionsort (h : (tail g))))
     ;
 
-}
 
+    lfold f n [] = n;
+    lfold f n (x:xs) = lfold f (f n x) xs;
+
+
+    rfold f n [] = n;
+    rfold f n (x:xs) = f x (rfold f n xs); 
+
+    len = foldl (\x y -> x+1) 0;
+
+    and = foldl (\x y -> x && y ) True;
+
+    prod = foldl (*) 1;
+
+    nwd l = foldl gcd (prod l) l;
+
+    del el = foldr f [] where
+        f x y
+            | x == el = y
+            | otherwise = x:y
+    ;
+
+    my_map g = foldr (\x y -> g(x):y ) [] ;
+}
