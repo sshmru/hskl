@@ -69,4 +69,75 @@
     ;
 
     my_map g = foldr (\x y -> g(x):y ) [] ;
+    
+    chklist a [] = False;
+    chklist a (x:xs) = a == x || chklist a xs;
+    
+    flatn [] = [];
+    flatn (x:xs) = x ++ flatn xs;
+
+    chklist2 a [] = False;
+    chklist2 a l= foldl (||) False ( map (==a) l);
+
+    sm0 [] = [];
+    sm0 (x:xs) 
+        |x<0 =x: sm0 xs
+        |otherwise = sm0 xs
+    ;
+
+    sm0c [] = [];
+    sm0c l = [x | x <- l, x < 0];
+
+    sm0k = filter(<0);
+
+    da _ [] = [];
+    da a (x:xs)
+        |a == x = da a xs
+        |otherwise = x : da a xs
+    ;
+
+    spl a l = ([x|x<-l, x<a], [y|y<-l, y>=a]);
+
+
+    data Tree a = Nil | Node a (Tree a) (Tree a) deriving (Show);
+
+    sizT Nil = 0;
+    sizT (Node _ a b) = 1 +  sizT a + sizT b;
+
+    maxT Nil = 0;
+    maxT (Node x a b) = max x (max (maxT a) (maxT b) );
+
+    mapT f Nil = Nil;
+    mapT f (Node x a b) =( Node (f x) (mapT f a) (mapT f b));
+
+    data BoolExpr = Value Bool | And BoolExpr BoolExpr | Not BoolExpr;
+
+    eval (Value a) = a;
+    eval (Not a) = not (eval a);
+    eval (And a b) = (eval a) && (eval b);
+
+    grupowanie [] = [];
+    grupowanie(l:ls) = grp [l] ls where
+        grp acc [] = [acc];
+        grp (a:as) (l:ls)
+            |a==l =grp (l:a:as) ls
+            |otherwise = [a:as]++ grp [l] ls
+    ;
+
+    grupowanie2 [] = [];
+    grupowanie2 (l:ls) = grp [] [l] ls where
+        grp result acc [] = result ++ acc;
+        grp result (a:as) (l:ls)
+            |a==l = grp result (l:a:as) ls
+            |otherwise = grp (result ++ (a:as)) [l] ls
+    ;
+
+    pakowanie [] = [];
+    pakowanie(l:ls) = pak (l, 1) ls where
+        pak tpl [] = [tpl];
+        pak (a,b) (l:ls)
+            |a==l = pak (a,b+1) ls
+            |otherwise = [(a,b)] ++ pak (l,1) ls
+    ;
+
 }
